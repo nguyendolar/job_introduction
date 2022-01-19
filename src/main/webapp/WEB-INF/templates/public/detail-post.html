@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="public/fragments :: html_head">
+    <title>Skillhunt - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+<body>
+
+<nav th:replace="public/fragments :: header_menu" class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+
+</nav>
+<!-- END nav -->
+
+<!-- END nav -->
+<div th:if="${success}" class="toast" data-delay="2000" style="position:fixed;top: 100PX; right: 10PX;z-index: 2000;width: 300px">
+    <script>
+        swal({
+            title: 'Duyệt thành công!',
+            /* text: 'Redirecting...', */
+            icon: 'success',
+            timer: 3000,
+            buttons: true,
+            type: 'success'
+        })
+    </script>
+</div>
+
+<div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-12 text-center mb-5">
+                <p class="breadcrumbs mb-0"><span class="mr-3"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span>Detail<span></span></p>
+                <h1 class="mb-3 bread">Job Detail</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div th:if="${msg_register_success}" class="toast" data-delay="2500" style="position:fixed; top: 100PX; right: 10PX;z-index: 2000;width: 300px">-->
+<!--    <div class="toast-header" style="background-color: #1c7430">-->
+<!--        <strong class="mr-auto" style="color: white">Thông báo</strong>-->
+<!--        <small style="color: white">Vừa xong</small>-->
+<!--        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">-->
+<!--            <span aria-hidden="true" style="color: white">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
+<!--    <div class="toast-body" >-->
+<!--        <p th:text="'✅ ' +${msg_register_success}"></p>-->
+<!--    </div>-->
+<!--    <script>-->
+<!--        $(document).ready(function(){-->
+<!--            $('.toast').toast('show');-->
+<!--        });-->
+<!--    </script>-->
+<!--</div>-->
+
+<!--<div th:if="${msg_register_error}" class="toast" data-delay="2500" style="position:fixed; top: 100PX; right: 10PX;z-index: 2000;width: 300px">-->
+<!--    <div class="toast-header" style="background-color: red">-->
+
+<!--        <strong class="mr-auto" style="color: white">Thông báo</strong>-->
+<!--        <small style="color: white">Vừa xong</small>-->
+<!--        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">-->
+<!--            <span aria-hidden="true" style="color: white">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
+<!--    <div class="toast-body" >-->
+<!--        <p th:text="'❌ ' +${msg_register_error}"></p>-->
+<!--    </div>-->
+<!--    <script>-->
+<!--        $(document).ready(function(){-->
+<!--            $('.toast').toast('show');-->
+<!--        });-->
+<!--    </script>-->
+<!--</div>-->
+<!-- HOME -->
+
+
+<section style="margin-top: 10px" class="site-section">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <div class="d-flex align-items-center">
+                    <div class="border p-2 d-inline-block mr-3 rounded">
+                        <img width="100" height="100" th:src="${recruitment.company.logo}" alt="Image">
+                    </div>
+                    <div>
+                        <h2 th:text="${recruitment.title}"></h2>
+                        <div>
+                            <span class="icon-briefcase mr-2"></span><a th:href="${'/user/detail-company/'}+${recruitment.company.id}" th:text="${recruitment.company.nameCompany}" class="ml-0 mr-2 mb-2"></a>
+                            <span  class="icon-room mr-2"></span ><span th:text="${recruitment.address}" class="m-2"></span>
+                            <span class="icon-clock-o mr-2"></span><span class="m-2" th:text="${recruitment.type}"></span>
+                        </div>
+                        <input type="hidden" th:id="${'idRe'}+${recruitment.id}" th:value="${recruitment.id}">
+                    </div>
+                </div>
+            </div>
+            <div th:if="${session.user}" class="col-lg-4">
+                <div th:if="${session.user.role.id == 1}" class="row">
+                   
+                </div>
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="mb-5">
+
+                    <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-align-left mr-3"></span>Job description</h3>
+                    <p th:utext="${recruitment.description}"></p>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="bg-light p-3 border rounded mb-4">
+                    <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Job summary</h3>
+                    <ul class="list-unstyled pl-3 mb-0">
+                       <li class="mb-2"> <strong class="text-black">Date created: </strong> <span th:text="${recruitment.createdAt}"></span> </li>
+                        <li class="mb-2"><strong class="text-black">Type of work: </strong> <span th:text="${recruitment.type}"></span></li>
+                        <li class="mb-2"><strong class="text-black">Category: </strong> <span th:text="${recruitment.category.name}"></span></li>
+                        <li class="mb-2"><strong class="text-black">Experience: </strong> <span th:text="${recruitment.experience}"></span></li>
+                        <li class="mb-2"><strong class="text-black">Address: </strong> <span th:text="${recruitment.address}"></span></li>
+                        <li class="mb-2"><strong class="text-black">Salary </strong> <span th:text="${recruitment.salary}"></span></li>
+                        <li class="mb-2"><strong class="text-black">Quantily: </strong><span th:text=" ${recruitment.quantity}"></span></li>
+                        <li class="mb-2"><strong class="text-black">Deadline to submit CV: </strong><span th:text=" ${recruitment.deadline}"></span></li>
+                    </ul>
+                </div>
+
+                <div class="bg-light p-3 border rounded">
+                    <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Share</h3>
+                    <div class="px-3">
+                        <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-facebook"></span></a>
+                        <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter"></span></a>
+                        <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-linkedin"></span></a>
+                        <a href="#" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-pinterest"></span></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal -->
+
+
+
+
+
+<footer th:replace="public/fragments :: footer" class="ftco-footer ftco-bg-dark ftco-section">
+
+</footer>
+</body>
+</html>

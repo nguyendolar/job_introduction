@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head th:fragment="html_head">
+  <title>Work CV</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/user/assets/css/open-iconic-bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/animate.css}">
+
+  <link rel="stylesheet" th:href="@{/user/assets/css/owl.carousel.min.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/owl.theme.default.min.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/magnific-popup.css}">
+
+  <link rel="stylesheet" th:href="@{/user/assets/css/owl.carousel.min.css}">
+
+  <link rel="stylesheet" th:href="@{/user/assets/css/owl.theme.default.min.css}">
+
+  <link rel="stylesheet" th:href="@{/user/assets/css/aos.css}">
+
+  <link rel="stylesheet" th:href="@{/user/assets/css/ionicons.min.css}">
+
+  <link rel="stylesheet" th:href="@{/user/assets/css/bootstrap-datepicker.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/jquery.timepicker.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/css/bootstrap-reboot.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/css/mixins/_text-hide.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/flaticon.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/icomoon.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/style.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/bootstrap/bootstrap-grid.css}">
+  <link rel="stylesheet" th:href="@{/user/assets/css/bootstrap/bootstrap-reboot.css}">
+  <script th:src="@{/user/assets/js/jquery.min.js}" ></script>
+  <script th:src="@{/user/assets/js/jquery-migrate-3.0.1.min.js}"></script>
+  <script th:src="@{/user/assets/js/popper.min.js}"></script>
+  <script th:src="@{/user/assets/js/bootstrap.min.js}" ></script>
+  <script th:src="@{/user/assets/js/jquery.easing.1.3.js}"></script>
+  <script th:src="@{/user/assets/js/jquery.waypoints.min.js}"></script>
+  <script th:src="@{/user/assets/js/jquery.stellar.min.js}"></script>
+  <script th:src="@{/user/assets/js/owl.carousel.min.js}"></script>
+  <script th:src="@{/user/assets/js/jquery.magnific-popup.min.js}" ></script>
+  <script th:src="@{/user/assets/js/aos.js}"></script>
+  <script th:src="@{/user/assets/js/jquery.animateNumber.min.js}"></script>
+  <script th:src="@{/user/assets/js/scrollax.min.js}"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script th:src="@{/user/assets/js/google-map.js}"></script>
+  <script th:src="@{/user/assets/js/main.js}"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+
+<nav th:fragment="header_menu" class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+  <div class="container-fluid px-md-4	">
+    <a class="navbar-brand" href="/">Work CV</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="oi oi-menu"></span> Menu
+    </button>
+
+    <div class="collapse navbar-collapse" id="ftco-nav">
+      <ul class="navbar-nav ml-auto">
+        <li th:class="${activeHome}? 'nav-item active' :'nav-item'"><a href="/" class="nav-link">Home</a></li>
+        
+<!--        <li class="nav-item"><a href="blog.html" class="nav-link">Công ty</a></li>-->
+
+        <li th:if="${session.user}" class="nav-item"><a th:href="@{'/user/profile/'+${session.user.id}}" th:text="'Hello, ' + ${session.user.fullName}" class="nav-link" ></a>
+
+          <ul class="dropdown">
+            <li><a th:href="@{'/user/profile/'+ ${session.user.id}}">Profile</a></li>
+            <li th:if="${session.user.role.id == 1}"><a href="/save-job/get-list" >Job postings saved</a></li>
+            <li th:if="${session.user.role.id == 2}"><a href="/user/list-post" >List of posted news</a></li>
+            <li th:if="${session.user.role.id == 1}"><a href="/user/get-list-apply" >Job application</a></li>
+            <li><a href="/auth/logout" >Log out</a></li>
+
+          </ul></li>
+        <th:block th:if="${session.user}">
+          <li th:if="${session.user.role.id == 1 }" style="width: 100px"></li>
+        </th:block>
+
+        <th:block th:if="${session.user}">
+          <li th:if="${session.user.role.id == 2 }" class="nav-item cta mr-md-1"><a href="/recruitment/post" class="nav-link">Published Recruitment</a></li>
+        </th:block>
+        <li th:unless="${session.user}" class="nav-item cta cta-colored"><a href="/auth/login" class="nav-link">Login</a></li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- END nav -->
+
+<footer th:fragment="footer" class="ftco-footer ftco-bg-dark ftco-section">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-12 text-center">
+
+        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          Copyright &copy;<script>document.write(new Date().getFullYear());</script>  <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Coder</a>
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+<!-- loader -->
+<div th:fragment="loading" id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+</body>
+</html>

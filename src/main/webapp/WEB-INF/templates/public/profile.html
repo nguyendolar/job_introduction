@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="public/fragments :: html_head">
+    <title>Skillhunt - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+<body>
+<div th:if="${confirm_account}" class="toast" data-delay="2000" style="position:fixed; top: 100PX; left: 10PX;z-index: 2000;width: 300px">
+
+    <script>
+        swal({
+            title: 'Success!',
+            /* text: 'Redirecting...', */
+            icon: 'success',
+            timer: 3000,
+            buttons: true,
+            type: 'success'
+        })
+    </script>
+</div>
+<div th:if="${success}" class="toast" id="toast" data-delay="2000" style="position:fixed;top: 100PX; left: 10PX;z-index: 2000;width: 300px">
+    <script>
+        swal({
+            title: 'Success!',
+            /* text: 'Redirecting...', */
+            icon: 'success',
+            timer: 3000,
+            buttons: true,
+            type: 'success'
+        })
+    </script>
+</div>
+<nav th:replace="public/fragments :: header_menu" class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+
+</nav>
+<!-- END nav -->
+
+
+
+<div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-12 text-center mb-5">
+                <h1 class="mb-3 bread">Profile </h1>
+                <div class="form-group">
+                    <label class="btn btn-primary btn-md btn-file">
+                        Upload image<input type="file" name="file" id="fileUpload" hidden>
+                    </label>
+                </div>
+                <div style="margin-left: 0px" id="divImage" >
+                    <img id="avatar" height="100" width="100" style="border-radius: 50px" th:src="${userInformation.image != null ? userInformation.image : 'https://st.quantrimang.com/photos/image/072015/22/avatar.jpg'}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- HOME -->
+<div th:if="${userInformation.status == 0}" class="container-fluid" style="text-align: center">
+    <p style="font-size: 20px;font-weight: bold;color: #aaa;margin-top: 10px">Xác thực email đăng nhập</p>
+    <div style="width: 600px;height: 400px;border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;margin: 20px auto;padding: 15px">
+        <p style="line-height: 35px;font-size: 16px">Xin chào, <span th:text="${userInformation.fullName}" ></span> và làm theo hướng dẫn trong email.
+            Trường hợp không nhận được email, bạn vui lòng bấm nút Nhận email xác thực dưới đây.</p>
+        <div class="row form-group">
+            <form action="/user/confirm-account" method="post" class="col-md-12">
+                <input type="hidden" th:value="${userInformation.email}" name="email" class="btn px-4 btn-primary text-white">
+                <input type="submit" value="Nhận email xác thực" class="btn px-4 btn-primary text-white">
+            </form>
+        </div>
+        <p>Mọi thắc mắc vui lòng liên hệ bộ phận CSKH của WorkCV:<br></p>
+        - Điện thoại:<span style="color:#5f80ec">(024) 6680 5588</span><br>
+        - Email: <a href="#" style="color:#5f80ec"> hotro@workcv.vn</a>
+    </div>
+    <div th:if="${comfirm_await}" style="width: 600px;height: 400px;border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;margin: 20px auto;padding: 15px">
+        <p style="line-height: 35px;font-size: 16px">Xin chào, <span th:text="${userInformation.fullName}" ></span> .Bạn đã gửi yêu cầu xác thực thành công,
+            vui lòng kiểm tra mail để xác thực.Cảm ơn bạn!!!
+        </p>
+        <p>Mọi thắc mắc vui lòng liên hệ bộ phận CSKH của WorkCV:<br></p>
+        - Điện thoại:<span style="color:#5f80ec">(024) 6680 5588</span><br>
+        - Email: <a href="#" style="color:#5f80ec"> hotro@workcv.vn</a>
+    </div>
+</div>
+<section th:if="${userInformation.status == 1 && userInformation.role.id == 1}" class="site-section" style="margin-top: 10px">
+    <div class="container">
+        <form enctype="multipart/form-data">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-8 ">
+                    <div class="d-flex align-items-center">
+                        <div class="form-group" style="margin-top: 15px">
+                            <label class="btn btn-primary btn-md btn-file">
+                                Upload CV (pdf file)<input type="file" name="file" id="fileUpload1" required hidden>
+                            </label>
+                        </div>
+                    </div>
+                    <p id="cvName" th:if="${Cv != null}" th:text="${Cv != null ? Cv.fileName :'Chưa cập nhập'}"></p>
+                    <p id="cvName" th:if="${Cv == null}"></p>
+                    <a id="nameCv" th:if="${Cv !=null}" th:href="${'http://localhost:8080/resources/uploads/'} +${Cv.fileName}" >View CV</a>
+                    <a id="nameCv"  th:href="${'http://localhost:8080/resources/uploads/'}" ></a>
+                    <a style="color: red;margin-left: 20px" th:if="${Cv !=null}" data-toggle="modal" data-target="#exampleModal" >Delete CV</a>
+                    <a style="color: red;margin-left: 20px" th:if="${Cv ==null}" id="xoa" data-toggle="modal" data-target="#exampleModal" ></a>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="row">
+<!--                        <div class="col-6">-->
+<!--                            <button type="submit" id="myBtn" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Cập nhật cv</button>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form action="/user/update-profile" method="post" >
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-8 mb-4 mb-lg-0">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h2>Update information</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-block btn-primary btn-md">Save information</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-lg-12">
+                    <div class="p-4 p-md-5 border rounded" method="post">
+                        <h3 class="text-black mb-5 border-bottom pb-2">Details information</h3>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" th:value="${userInformation.email != null ? userInformation.email : null}" required placeholder="you@yourdomain.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="job-title">Full name</label>
+                            <input type="text" class="form-control" name="fullName" th:value="${userInformation.fullName != null ? userInformation.fullName : null}" required id="job-title" placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="job-location">Address</label>
+                            <input type="text" name="address" th:value="${userInformation.address != null ? userInformation.address : null}" class="form-control" id="job-location" required placeholder="e.g. New York">
+                        </div>
+                        <div class="form-group">
+                            <label for="job-location">Phone Number</label>
+                            <input type="text" name="phoneNumber" th:value="${userInformation.phoneNumber != null ? userInformation.phoneNumber : null}" class="form-control" id="job-location" required placeholder="+ 84">
+                        </div>
+                        <div class="form-group">
+                            <label for="job-location">Describe yourself</label>
+                            <textarea  name="description" th:text="${userInformation.description != null ? userInformation.description : null}" class="form-control" id="editor" placeholder="Describe yourself"></textarea>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Modal -->
+<div class="modal fade"  id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Are you sure delete ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Cv : <span id="cvXoa" ></span>
+                <span th:if="${Cv != null}" th:text="${Cv.fileName}"></span>
+                <form action="/user/deleteCv" method="post">
+                    <div class="modal-footer mt-1">
+                        <input type="hidden"  name="idCv">
+                        <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<section th:if="${userInformation.status == 1 && userInformation.role.id == 2}" class="site-section" style="margin-top: 10px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-5">
+                <h2 class="mb-4">Personal information</h2>
+                <form action="/user/update-profile" method="post" >
+
+                    <div class="row mb-5">
+                        <div class="col-lg-12">
+                            <div class="p-4 p-md-5 border rounded" method="post">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" th:value="${userInformation.email}" required placeholder="you@yourdomain.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="job-title">FullName</label>
+                                    <input type="text" class="form-control" name="fullName" th:value="${userInformation.fullName}" id="job-title" required placeholder="Full name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="job-location">Address</label>
+                                    <input type="text" name="address" th:value="${userInformation.address != null ? userInformation.address : null}" required class="form-control" id="job-location" placeholder="e.g. New York">
+                                </div>
+                                <div class="form-group">
+                                    <label for="job-location">Phone Number</label>
+                                    <input type="text" name="phoneNumber" th:value="${userInformation.phoneNumber != null ? userInformation.phoneNumber : null}" required class="form-control" id="job-location" placeholder="+ 84">
+                                </div>
+                                <div class="form-group">
+                                    <label for="job-location">Describe yourself</label>
+                                    <textarea  name="description" th:text="${userInformation.description != null ? userInformation.description : null}" class="form-control" id="editor" placeholder="Describe yourself"></textarea>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <input type="submit" value="Save" class="btn px-4 btn-primary text-white">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <h2 class="mb-4">Company information</h2>
+                <div class="form-group">
+                    <label for="company-website-tw d-block1">Update Logo</label> <br>
+                    <label class="btn btn-primary btn-md btn-file">
+                        Upload Logo<input type="file" name="file" id="fileUpload2" required hidden>
+                    </label>
+                    <div id="divLogo">
+                        <img id="avatar1" height="100" width="100" style="border-radius: 50px" th:src="${companyInformation.logo != null ? companyInformation.logo : 'https://st.quantrimang.com/photos/image/072015/22/avatar.jpg'}">
+                    </div>
+                </div>
+                <form action="/user/update-company" method="post" enctype="multipart/form-data" >
+
+                    <div class="row mb-5">
+                        <div class="col-lg-12">
+                            <div class="p-4 p-md-5 border rounded" method="post">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+
+                                    <input type="text" class="form-control" required id="email1" name="email" th:value="${companyInformation.email != null ? companyInformation.email : null }" placeholder="you@yourdomain.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="job-title">Company name</label>
+                                    <input type="text" class="form-control" name="nameCompany" th:value="${companyInformation.nameCompany != null ? companyInformation.nameCompany : null }" id="job-title"  placeholder="Full name" required>
+                                    <input type="hidden" class="form-control" name="user_id" th:value="${companyInformation.user.id != null ? companyInformation.user.id : null}" id="job-title" placeholder="Full name">
+                                    <input type="hidden" class="form-control" name="id" th:value="${companyInformation.id !=null ? companyInformation.id : null}" id="job-title" placeholder="Full name">
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="job-location">Address</label>
+                                    <input type="text" name="address" th:value="${companyInformation.address != null ? companyInformation.address : null}" required class="form-control" id="job-location" placeholder="e.g. New York">
+                                </div>
+                                <div class="form-group">
+                                    <label for="job-location">Company phone number</label>
+                                    <input type="text" name="phoneNumber" th:value="${companyInformation.phoneNumber != null ? companyInformation.phoneNumber : null}" required class="form-control" id="job-location" placeholder="+ 84">
+                                </div>
+                                <div class="form-group">
+                                    <label for="job-location">Company description</label>
+                                    <textarea  name="description" th:text="${companyInformation.description != null ? companyInformation.description : null}"  class="form-control" id="editorN" placeholder=""></textarea>
+                                </div>
+
+
+                                
+                                <div class="row form-group" >
+                                    <div class="col-md-12">
+                                        <input type="submit" value="Save" class="btn px-4 btn-primary text-white">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    ClassicEditor.create(document.querySelector('#editor')).then(eidt => {
+        console.log("da" + eidt);
+    })
+        .catch(error => {
+            console.error(error);
+        });
+    ClassicEditor.create(document.querySelector('#editorN')).then(eidt => {
+        console.log("da" + eidt);
+    })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+<script>
+    $(function () {
+        $('#fileUpload').change(function () {
+            if (window.FormData !== undefined) {
+                var fileUpload = $('#fileUpload').get(0);
+                var files = fileUpload.files;
+                var email = $("#email").val();
+                var formData = new FormData();
+                formData.append('file', files[0]);
+                formData.append('email', email);
+                if(files[0] == null){
+                    // document.getElementById("change").style.backgroundColor = 'red';
+                    // $('#text').val(" ❌ Cập nhật ảnh thất bại");
+                    $(".toast").toast("show");
+                } else {
+                    $.ajax(
+                        {
+                            type: 'POST',
+                            url: '/user/upload/',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (urlImage) {
+                                console.log(urlImage)
+                                if(urlImage == "Error"){
+                                    document.getElementById("change").style.backgroundColor = 'red';
+                                    swal({
+                                        title: 'Cập nhật ảnh đại diện thất bại!',
+                                        /* text: 'Redirecting...', */
+                                        icon: 'error',
+                                        timer: 3000,
+                                        buttons: true,
+                                        type: 'error'
+                                    })
+                                    $("#divImage").css("display","block")
+                                }else{
+                                    $('#avatar').attr('src', urlImage)
+                                    swal({
+                                        title: 'Profile photo update successfully!',
+                                        /* text: 'Redirecting...', */
+                                        icon: 'success',
+                                        timer: 3000,
+                                        buttons: true,
+                                        type: 'success'
+                                    })
+                                }
+
+                            },
+                            error: function (err) {
+                                alert(err);
+                            }
+                        }
+                    )
+                }
+
+            }
+        })
+    })
+</script>
+
+<script>
+    $(function () {
+        $('#fileUpload2').change(function () {
+            if (window.FormData !== undefined) {
+                var fileUpload = $('#fileUpload2').get(0);
+                var files = fileUpload.files;
+                var email = $("#email").val();
+                var formData = new FormData();
+                formData.append('file', files[0]);
+                formData.append('email', email);
+                if(files[0] == null){
+                    // document.getElementById("change").style.backgroundColor = 'red';
+                    // $('#text').val(" ❌ Cập nhật ảnh thất bại");
+                    $(".toast").toast("show");
+                } else {
+                    $.ajax(
+                        {
+                            type: 'POST',
+                            url: '/user/upload-company/',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (urlImage) {
+                                console.log(urlImage)
+                                if(urlImage == "Error"){
+                                    document.getElementById("change").style.backgroundColor = 'red';
+                                    swal({
+                                        title: 'Cập nhật logo thất bại!',
+                                        /* text: 'Redirecting...', */
+                                        icon: 'error',
+                                        timer: 3000,
+                                        buttons: true,
+                                        type: 'error'
+                                    })
+                                    $("#divLogo").css("display","block")
+                                }else{
+                                    $('#avatar1').attr('src', urlImage)
+                                    swal({
+                                        title: 'Logo update successful!',
+                                        /* text: 'Redirecting...', */
+                                        icon: 'success',
+                                        timer: 3000,
+                                        buttons: true,
+                                        type: 'success'
+                                    })
+                                }
+
+                            },
+                            error: function (err) {
+                                alert(err);
+                            }
+                        }
+                    )
+                }
+
+            }
+        })
+    })
+</script>
+
+<script>
+    $(function () {
+        $('#fileUpload1').change(function () {
+            if (window.FormData !== undefined) {
+                var fileUpload = $('#fileUpload1').get(0);
+                var files = fileUpload.files;
+                var formData = new FormData();
+                formData.append('file', files[0]);
+                if(files[0] == null){
+                    // document.getElementById("change").style.backgroundColor = 'red';
+                    // $('#text').val(" ❌ Cập nhật ảnh thất bại");
+                    $(".toast").toast("show");
+                } else {
+                    $.ajax(
+                        {
+                            type: 'POST',
+                            url: '/user/uploadCv',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (urlImage) {
+                                console.log(urlImage)
+                                if(urlImage == "false"){
+                                    // document.getElementById("change").style.backgroundColor = 'red';
+
+                                    swal({
+                                        title: 'Cần chọn đúng loại file (PDF)!',
+                                        /* text: 'Redirecting...', */
+                                        icon: 'error',
+                                        timer: 3000,
+                                        buttons: true,
+                                        type: 'error'
+                                    })
+                                    // $("#divImage").css("display","block")
+                                }else{
+                                    // $('#avatar').attr('src', urlImage)
+                                    document.getElementById('nameCv').innerHTML = 'View CV';
+                                    document.getElementById('nameCv').href = "http://localhost:8080/resources/uploads/"+urlImage ; //or grab it by tagname etc
+                                    document.getElementById('xoa').innerHTML = 'Delete CV';
+                                    document.getElementById("cvName").innerHTML = urlImage;
+                                    document.getElementById("cvXoa").innerHTML = urlImage;
+
+                                    swal({
+                                        title: 'Successfully updated CV!',
+                                        /* text: 'Redirecting...', */
+                                        icon: 'success',
+                                        timer: 3000,
+                                        buttons: true,
+                                        type: 'success'
+                                    })
+                                }
+
+                            },
+                            error: function (err) {
+                                alert(err);
+                            }
+                        }
+                    )
+                }
+
+            }
+        })
+    })
+</script>
+
+<footer th:replace="public/fragments :: footer" class="ftco-footer ftco-bg-dark ftco-section">
+
+</footer>
+</body>
+</html>

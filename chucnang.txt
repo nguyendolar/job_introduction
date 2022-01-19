@@ -1,0 +1,3 @@
+Nhà tuyển dụng(Công ty) : đăng ký, đăng nhập, đăng ký thông tin nhà tuyển dụng (công ty), đăng tin tuyển dụng
+Ứng viên : đăng ký, đăng nhập, upload cv,  xem các tin tuyển dụng, xem thông tin nhà tuyển dụng( công ty), nộp đơn ứng tuyển (apply), theo dõi tin tuyển dụng
+Hiển thị các tin tuyển dụng mới nhất, các nhà tuyển dụng(công ty) nổi bật nhất
